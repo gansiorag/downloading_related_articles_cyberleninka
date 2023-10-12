@@ -53,5 +53,12 @@ for el in first_articles:
     dd = el.find_element(By.XPATH, './a')
     print(dd.get_attribute("href"))
 
+puginators = driver.find_elements(By.XPATH, '//ul[@class="paginator"]//li//a')
+print('puginators = ', len(puginators))
+href4 = puginators[4].get_attribute("href")
+print()
+print(href4)
+sleep(3)
+driver.get(href4)
 sleep(600)
 driver.close()
