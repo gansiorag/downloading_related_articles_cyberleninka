@@ -130,15 +130,15 @@ def get_all_info_articles(href: str):
     area_sciens = driver.find_elements(By.XPATH, '//div[@class="half-right"]//ul//li//a')
     area_sciens_f = ''
     for area in area_sciens:
-        area_sciens_f += (area_sciens_f.text + ',')
-        area_sciens_f += (area_sciens_f.get_attribute('href') + ',')
+        area_sciens_f += (area.text + ',')
+        area_sciens_f += (area.get_attribute('href') + ',')
     print()
     print(area_sciens_f)
     
     key_words = driver.find_elements(By.XPATH, '//div[@class="infoblock visible"]//i[@itemprop="keywords"]//span')
     key_words_f = ''
     for word in key_words:
-        key_words_f += (key_words_f.text + ',')
+        key_words_f += (word.text + ',')
     print()
     print(key_words_f)
     
@@ -147,11 +147,28 @@ def get_all_info_articles(href: str):
     ann_art_eng = ann_art[1].text
     print()
     print('ann_art_rus = ', ann_art_rus)
-    names_art = driver.find_element(By.XPATH, '//div[@class="full abstract"]//h2')
+    print()
+    print('ann_art_eng = ', ann_art_eng)
+    names_art = driver.find_elements(By.XPATH, '//div[@class="full abstract"]//h2')
     name_art_eng = names_art[1].text
     print()
     print('name_art_eng = ', name_art_eng)
     
+    link_arts = driver.find_elements(By.XPATH, '//div[@class="full"]//ul//li')
+    link_arts_f = ''
+    for link in link_arts:
+        link_arts_href = link.find_element(By.XPATH, './a[@class="similar"]').get_attribute('href')
+        print()
+        print(link_arts_href)
+        link_arts_name = link.find_element(By.XPATH, './a[@class="similar"]//div[@class="title"]').text
+        print()
+        print('link_arts_name = ', link_arts_name)
+        autors_link_arts = link.find_element(By.XPATH, './a[@class="similar"]//span').text.split('/')
+        print()
+        print('link_arts_year = ', autors_link_arts[0])
+        print()
+        print('link_arts_autors = ', autors_link_arts[1])
+        
     autors = driver.find_elements(
         By.XPATH, '//div//ul[@class="author-list"]//li//span')
     file_load = driver.find_element(
@@ -165,7 +182,7 @@ def get_all_info_articles(href: str):
         print(autor.text)
     print()
     print('file_name_db == ', file_name_db)
-    sleep(2)
+    sleep(1000)
     driver.close()
     return name_art, spec_art, autors_f, file_name_db
 
