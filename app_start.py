@@ -198,6 +198,7 @@ def load_article():
 
 
 if __name__ == '__main__':
-    fraza = "зрение роботов"
-    # step_one(fraza)
-    load_article()
+    #fraza = "зрение роботов"
+    fraza = "архитектура сознания"
+    step_one(fraza)
+    #load_article()
