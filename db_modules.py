@@ -42,7 +42,13 @@ class WDB():
                 f"""'{data["name_art"]}', '{data["autor"]}', '{data["year"]}');"""
         self.cur.execute(sqlText)
         self.conn.commit()
-    
+        
+    def get_zero_load(self):
+        sqlText = 'SELECT questions, level_link, href, file, name_art, autor, "year" '\
+            'FROM all_info_articles WHERE file = "";'
+        self.cur.execute(sqlText)
+        data = self.cur.fetchall()
+        return data
     
 def prog2():
     pass
