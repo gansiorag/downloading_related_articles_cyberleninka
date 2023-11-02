@@ -94,7 +94,7 @@ def step_one(fraza: str):
     driver.close()
 
 
-def get_all_info_articles(href: str):
+def get_all_info_articles(href: str, path_load):
     # start page
     driver = webdriver.Chrome(
         '/home/al/Projects_My/downloading_related_articles_cyberleninka/config/chromedriver')
@@ -107,74 +107,83 @@ def get_all_info_articles(href: str):
     spec_art = spec_art.text
     print()
     print(spec_art)
-    
-    name_mag = driver.find_element(By.XPATH, '//div[@class="half"]//span//a[1]')
+
+    name_mag = driver.find_element(
+        By.XPATH, '//div[@class="half"]//span//a[1]')
     name_mag_text = name_mag.text
     print()
     print(name_mag_text)
-    
+
     name_mag_href = name_mag.get_attribute('href')
     print()
     print(name_mag_href)
-        
-    year_art = driver.find_element(By.XPATH, '//div[@class="half"]//div[@class="labels"]//div[@class="label year"]')
+
+    year_art = driver.find_element(
+        By.XPATH, '//div[@class="half"]//div[@class="labels"]//div[@class="label year"]')
     year_art = year_art.text
     print()
     print('year_art = ', year_art)
 
-    vak_art = driver.find_element(By.XPATH, '//div[@class="half"]//div[@class="labels"]//div[@class="label vak"]')
+    vak_art = driver.find_element(
+        By.XPATH, '//div[@class="half"]//div[@class="labels"]//div[@class="label vak"]')
     vak_art = vak_art.text
     print()
     print('vak_art = ', vak_art)
-        
-    area_sciens = driver.find_elements(By.XPATH, '//div[@class="half-right"]//ul//li//a')
+
+    area_sciens = driver.find_elements(
+        By.XPATH, '//div[@class="half-right"]//ul//li//a')
     area_sciens_f = ''
     for area in area_sciens:
         area_sciens_f += (area.text + ',')
         area_sciens_f += (area.get_attribute('href') + ',')
     print()
     print(area_sciens_f)
-    
-    key_words = driver.find_elements(By.XPATH, '//div[@class="infoblock visible"]//i[@itemprop="keywords"]//span')
+
+    key_words = driver.find_elements(
+        By.XPATH, '//div[@class="infoblock visible"]//i[@itemprop="keywords"]//span')
     key_words_f = ''
     for word in key_words:
         key_words_f += (word.text + ',')
     print()
     print(key_words_f)
-    
-    ann_art = driver.find_elements(By.XPATH, '//div[@class="full abstract"]//p[@itemprop="description"]')
+
+    ann_art = driver.find_elements(
+        By.XPATH, '//div[@class="full abstract"]//p[@itemprop="description"]')
     ann_art_rus = ann_art[0].text
     ann_art_eng = ann_art[1].text
     print()
     print('ann_art_rus = ', ann_art_rus)
     print()
     print('ann_art_eng = ', ann_art_eng)
-    names_art = driver.find_elements(By.XPATH, '//div[@class="full abstract"]//h2')
+    names_art = driver.find_elements(
+        By.XPATH, '//div[@class="full abstract"]//h2')
     name_art_eng = names_art[1].text
     print()
     print('name_art_eng = ', name_art_eng)
-    
+
     link_arts = driver.find_elements(By.XPATH, '//div[@class="full"]//ul//li')
     link_arts_f = ''
     for link in link_arts:
-        link_arts_href = link.find_element(By.XPATH, './a[@class="similar"]').get_attribute('href')
+        link_arts_href = link.find_element(
+            By.XPATH, './a[@class="similar"]').get_attribute('href')
         print()
         print(link_arts_href)
-        link_arts_name = link.find_element(By.XPATH, './a[@class="similar"]//div[@class="title"]').text
+        link_arts_name = link.find_element(
+            By.XPATH, './a[@class="similar"]//div[@class="title"]').text
         print()
         print('link_arts_name = ', link_arts_name)
-        autors_link_arts = link.find_element(By.XPATH, './a[@class="similar"]//span').text.split('/')
+        autors_link_arts = link.find_element(
+            By.XPATH, './a[@class="similar"]//span').text.split('/')
         print()
         print('link_arts_year = ', autors_link_arts[0])
         print()
         print('link_arts_autors = ', autors_link_arts[1])
-        
+
     autors = driver.find_elements(
         By.XPATH, '//div//ul[@class="author-list"]//li//span')
     file_load = driver.find_element(
         By.XPATH, '//div[@class="infoblock"]//a[@class="btn-new-square"]').get_attribute("href")
-    file_name_db = wget.download(file_load,
-                             out='/home/al/Projects_My/downloading_related_articles_cyberleninka/dataset/files_articles')
+    file_name_db = wget.download(file_load, out=path_load)
     autors_f = ''
     for autor in autors:
         autors_f += (autor.text + ',')
@@ -194,11 +203,19 @@ def load_article():
     print(len(list_href))
     print(list_href[3])
     for str_s in list_href:
-        get_all_info_articles(str_s[2])
+        path_load = f'/home/al/Projects_My/downloading_related_articles_cyberleninka/dataset/'\
+            'files_articles/{str_s[0]}'
+        os.makedirs(path_load, exist_ok=True)
+        get_all_info_articles(str_s[2], path_load)
+        break
 
 
 if __name__ == '__main__':
-    #fraza = "зрение роботов"
-    fraza = "архитектура сознания"
-    step_one(fraza)
-    #load_article()
+    fraza = "зрение роботов"
+    # fraza = "архитектура сознания"
+
+    # load all href on all atricles for fraza
+    # step_one(fraza)
+
+    # load files articles and add links addons
+    load_article()
