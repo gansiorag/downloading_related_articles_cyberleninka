@@ -1,41 +1,44 @@
-'''
- This module collects 
-    
-Athor: Gansior Alexander, gansior@gansior.ru, +79173383804
-Starting 2023/10/10
-Ending 2023//
-    
-'''
-from db_modules import WDB
-from selenium.webdriver.common.by import By
-from selenium import webdriver
+"""
+This module collects
+"""
+# Athor: Gansior Alexander, gansior@gansior.ru, +79173383804
+# Starting 2023/10/10
+# Ending 2023//
+
 from time import sleep
 import sys
 import os
+from selenium.webdriver.common.by import By
+from selenium import webdriver
 from termcolor import cprint
-import inspect
+# import inspect
 import wget
+from db_modules import WDB
 
-'''
-Text colors: grey red green yellow blue magenta cyan white
-Text highlights: on_grey on_red on_green on_yellow on_blue on_magenta on_cyan on_white
-Attributes: bold dark underline blink reverse concealed
-template --> cprint(f'{}' , 'red', attrs=['bold'])
-    
-    
-Shows which module is currently running
-cprint('='*20 + ' >> ' + inspect.stack()[0][0].f_code.co_name + ' << '+'='*20, 'red', attrs=['bold'])
-'''
+# Summary:
+# Text colors: grey red green yellow blue magenta cyan white
+# Text highlights: on_grey on_red on_green on_yellow on_blue
+# on_magenta on_cyan on_white
+# Attributes: bold dark underline blink reverse concealed
+# template --> cprint(f'{}' , 'red', attrs=['bold'])
+# Shows which module is currently running
+# cprint('='*20 + ' >> ' + inspect.stack()[0][0].f_code.co_name
+# + ' << '+'='*20, 'red', attrs=['bold'])
 
+NAME_PROJECT_STARTS = 'downloading_related_articles_cyberleninka'
 
-nameProjectStart = 'downloading_related_articles_cyberleninka'
 file_dir = os.path.dirname(__file__)
 print(file_dir)
-sys.path.append(file_dir.split(nameProjectStart)[0] + nameProjectStart)
-base_path = file_dir.split(nameProjectStart)[0] + nameProjectStart + '/'
+sys.path.append(file_dir.split(NAME_PROJECT_STARTS)[0] + NAME_PROJECT_STARTS)
+base_path = file_dir.split(NAME_PROJECT_STARTS)[0] + NAME_PROJECT_STARTS + '/'
 
 
 def zero_data():
+    """_summary_
+
+    Returns:
+        _type_: _description_
+    """
     data = {"questions": "",
             "level_link": "",
             "href": "",
@@ -47,12 +50,19 @@ def zero_data():
 
 
 def step_one(fraza: str):
+    """_summary_
+
+    Args:
+        fraza (str): _description_
+    """
     # start page
     driver = webdriver.Chrome(
-        '/home/al/Projects_My/downloading_related_articles_cyberleninka/config/chromedriver')
+        '/home/al/Projects_My/downloading_related_articles_cyberleninka/'
+        'config/chromedriver')
     driver.get('https://cyberleninka.ru')
     db = WDB(
-        '/home/al/Projects_My/downloading_related_articles_cyberleninka/dataset/db_all_info.db')
+        '/home/al/Projects_My/downloading_related_articles_cyberleninka/'
+        'dataset/db_all_info.db')
 
     # get first page on ask
     in_ask = driver.find_element(By.XPATH, '//fieldset//input')
@@ -80,7 +90,8 @@ def step_one(fraza: str):
             list_href.append(dd.get_attribute("href"))
         print()
         cprint(
-            f'href_pag_b + str(npag) == {href_pag_b + str(npag)}', 'red', attrs=['bold'])
+            f'href_pag_b + str(npag) == {href_pag_b + str(npag)}',
+            'red', attrs=['bold'])
         driver.get(href_pag_b + str(npag))
         npag += 1
         sleep(3)
@@ -95,9 +106,19 @@ def step_one(fraza: str):
 
 
 def get_all_info_articles(href: str, path_load):
+    """_summary_
+
+    Args:
+        href (str): _description_
+        path_load (_type_): _description_
+
+    Returns:
+        _type_: _description_
+    """
     # start page
     driver = webdriver.Chrome(
-        '/home/al/Projects_My/downloading_related_articles_cyberleninka/config/chromedriver')
+        '/home/al/Projects_My/downloading_related_articles_cyberleninka/'
+        'config/chromedriver')
     driver.get(href)
     name_art = driver.find_element(By.XPATH, '//i[@itemprop="headline"]')
     name_art = name_art.text
@@ -119,13 +140,15 @@ def get_all_info_articles(href: str, path_load):
     print(name_mag_href)
 
     year_art = driver.find_element(
-        By.XPATH, '//div[@class="half"]//div[@class="labels"]//div[@class="label year"]')
+        By.XPATH, '//div[@class="half"]//div[@class="labels"]//'
+        'div[@class="label year"]')
     year_art = year_art.text
     print()
     print('year_art = ', year_art)
 
     vak_art = driver.find_element(
-        By.XPATH, '//div[@class="half"]//div[@class="labels"]//div[@class="label vak"]')
+        By.XPATH, '//div[@class="half"]//div[@class="labels"]//'
+        'div[@class="label vak"]')
     vak_art = vak_art.text
     print()
     print('vak_art = ', vak_art)
@@ -140,7 +163,8 @@ def get_all_info_articles(href: str, path_load):
     print(area_sciens_f)
 
     key_words = driver.find_elements(
-        By.XPATH, '//div[@class="infoblock visible"]//i[@itemprop="keywords"]//span')
+        By.XPATH, '//div[@class="infoblock visible"]//'
+        'i[@itemprop="keywords"]//span')
     key_words_f = ''
     for word in key_words:
         key_words_f += (word.text + ',')
@@ -162,7 +186,6 @@ def get_all_info_articles(href: str, path_load):
     print('name_art_eng = ', name_art_eng)
 
     link_arts = driver.find_elements(By.XPATH, '//div[@class="full"]//ul//li')
-    link_arts_f = ''
     for link in link_arts:
         link_arts_href = link.find_element(
             By.XPATH, './a[@class="similar"]').get_attribute('href')
@@ -182,7 +205,8 @@ def get_all_info_articles(href: str, path_load):
     autors = driver.find_elements(
         By.XPATH, '//div//ul[@class="author-list"]//li//span')
     file_load = driver.find_element(
-        By.XPATH, '//div[@class="infoblock"]//a[@class="btn-new-square"]').get_attribute("href")
+        By.XPATH, '//div[@class="infoblock"]//'
+        'a[@class="btn-new-square"]').get_attribute("href")
     file_name_db = wget.download(file_load, out=path_load)
     autors_f = ''
     for autor in autors:
@@ -197,21 +221,25 @@ def get_all_info_articles(href: str, path_load):
 
 
 def load_article():
+    """_summary_
+    """
     db = WDB(
-        '/home/al/Projects_My/downloading_related_articles_cyberleninka/dataset/db_all_info.db')
+        '/home/al/Projects_My/downloading_related_articles_cyberleninka/'
+        'dataset/db_all_info.db')
     list_href = db.get_zero_load()
     print(len(list_href))
     print(list_href[3])
     for str_s in list_href:
-        path_load = f'/home/al/Projects_My/downloading_related_articles_cyberleninka/dataset/'\
-            'files_articles/{str_s[0]}'
+        path_load = '/home/al/Projects_My/'\
+            'downloading_related_articles_cyberleninka/'\
+            f'dataset/files_articles/{str_s[0]}'
         os.makedirs(path_load, exist_ok=True)
         get_all_info_articles(str_s[2], path_load)
         break
 
 
 if __name__ == '__main__':
-    fraza = "зрение роботов"
+    # fraza = "зрение роботов"
     # fraza = "архитектура сознания"
 
     # load all href on all atricles for fraza
