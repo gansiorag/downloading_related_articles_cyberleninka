@@ -46,13 +46,25 @@ class WDB():
         self.cur = self.conn.cursor()
 
     def add_str_all_info_articles(self, data: dict):
-        sqlText = 'INSERT INTO all_info_articles (questions, level_link, href, file, name_art, autor, year) '\
+        """AI is creating summary for add_str_all_info_articles
+
+        Args:
+            data (dict): [description]
+        """
+        
+        sql_text = 'INSERT INTO all_info_articles (questions, level_link, href, file, name_art, autor, year) '\
             f"""VALUES('{data["questions"]}', '{data["level_link"]}', '{data["href"]}', '{data["file"]}', """\
             f"""'{data["name_art"]}', '{data["autor"]}', '{data["year"]}');"""
-        self.cur.execute(sqlText)
+        self.cur.execute(sql_text)
         self.conn.commit()
 
     def get_zero_load(self):
+        """AI is creating summary for get_zero_load
+
+        Returns:
+            [type]: [description]
+        """
+             
         sqlText = 'SELECT questions, level_link, href, file, name_art, autor, "year" '\
             'FROM all_info_articles WHERE file = "";'
         self.cur.execute(sqlText)
