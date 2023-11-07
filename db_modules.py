@@ -58,7 +58,7 @@ class WDB():
         self.cur.execute(sqlText)
         data = self.cur.fetchall()
         return data
-    
+
     def update_article(self, d_d: dict):
         """AI is creating summary for update_article
 
@@ -77,12 +77,10 @@ class WDB():
                 f"""WHERE href='{dict_data["href"]}'"""
 
 
-
 def prog2():
     pass
 
 
 if __name__ == '__main__':
     name = ''
-    prog1()
     prog2()
