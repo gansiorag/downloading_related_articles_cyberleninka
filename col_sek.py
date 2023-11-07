@@ -33,3 +33,6 @@ if __name__ == '__main__':
         print(len(DD_D))
     else:
         print('None')
+    d_l = list('')
+    print(len(d_l))
+    print()

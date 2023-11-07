@@ -58,6 +58,24 @@ class WDB():
         self.cur.execute(sqlText)
         data = self.cur.fetchall()
         return data
+    
+    def update_article(self, d_d: dict):
+        """AI is creating summary for update_article
+
+        Args:
+            dict_data (dict): [description]
+        """
+
+        sqlText = 'UPDATE all_info_articles '\
+            f"""SET file={d_d["file"]}, name_art=d-D["name_art"],"""\
+            f"""autor={d_d["autor"]},"""\
+            f"""year={d_d["autor"]}, spec={d_d["autor"]},"""\
+            f"""name_mag={d_d["autor"]}, mag_href={d_d["autor"]},"""\
+            f"""vak={d_d["autor"]},"""\
+            f"""area_sciens='', key_words='', ann_art_rus='', ann_art_eng='',"""\
+            f"""name_art_eng='', link_arts_href=''"""\
+                f"""WHERE href='{dict_data["href"]}'"""
+
 
 
 def prog2():
