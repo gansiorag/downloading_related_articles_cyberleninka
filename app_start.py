@@ -83,7 +83,7 @@ def step_one(fraza: str):
     sleep(3)
     butt2 = driver.find_elements(By.XPATH, '//ul[@class="tag-list"]//li//button')
     butt2[0].click()
-    sleep(3)
+    sleep(5)
     # get number pagination
     puginators = driver.find_elements(
         By.XPATH, '//ul[@class="paginator"]//li//a')
@@ -290,11 +290,14 @@ def load_article(fraza: str):
 if __name__ == '__main__':
     # fraza = "зрение роботов"
     # fraza = "архитектура сознания"
-    FRAZA = "комбинаторные методы в лингвистике"
+    # FRAZA = "комбинаторные методы в лингвистике"
+    # FRAZA = "математическое моделирование организма"
+    FRAZA = "математическая модель митохондрии"
     # FRAZA = "современная теория сознания"
 
     # FRAZA = "методы современной когнитологии"
     # FRAZA = "современная теория общих систем"
+
     # load all href on all atricles for fraza
     # step_one(FRAZA)
 
