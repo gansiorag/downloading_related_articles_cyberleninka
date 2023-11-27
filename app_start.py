@@ -81,9 +81,9 @@ def step_one(fraza: str):
     butt = driver.find_element(By.XPATH, '//fieldset//button')
     butt.click()
     sleep(3)
-    butt2 = driver.find_elements(By.XPATH, '//ul[@class="tag-list"]//li//button')
-    butt2[0].click()
-    sleep(5)
+    # butt2 = driver.find_elements(By.XPATH, '//ul[@class="tag-list"]//li//button')
+    # butt2[0].click()
+    # sleep(5)
     # get number pagination
     puginators = driver.find_elements(
         By.XPATH, '//ul[@class="paginator"]//li//a')
@@ -139,7 +139,7 @@ def get_all_info_articles(href: str, path_load, questions, level: str):
     data_dict = zero_data()
     name_art = driver.find_element(By.XPATH, '//i[@itemprop="headline"]')
     name_art = name_art.text
-    data_dict['name_art'] = name_art
+    data_dict['name_art'] = name_art.replace("'", '"')
     # print()
     # cprint(name_art, 'green', attrs=['bold'])
     spec_art = driver.find_element(By.XPATH, '//i[@itemprop="articleSection"]')
@@ -154,7 +154,7 @@ def get_all_info_articles(href: str, path_load, questions, level: str):
     name_mag_text = name_mag.text
     # print()
     # print(name_mag_text)
-    data_dict['name_mag'] = name_mag_text
+    data_dict['name_mag'] = name_mag_text.replace("'", '"')
     name_mag_href = name_mag.get_attribute('href')
     # print()
     # print(name_mag_href)
@@ -292,7 +292,10 @@ if __name__ == '__main__':
     # fraza = "архитектура сознания"
     # FRAZA = "комбинаторные методы в лингвистике"
     # FRAZA = "математическое моделирование организма"
-    FRAZA = "математическая модель митохондрии"
+    # FRAZA = "математическая модель митохондрии"
+    # FRAZA = "рибосома молекулярнная машина"
+    # FRAZA = "рибосома молекулярнная машина"
+    FRAZA = "рибосома"
     # FRAZA = "современная теория сознания"
 
     # FRAZA = "методы современной когнитологии"
