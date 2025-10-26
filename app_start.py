@@ -67,9 +67,7 @@ def step_one(fraza: str):
         fraza (str): _description_
     """
     # start page
-    driver = webdriver.Chrome(
-        '/home/al/Projects_My/downloading_related_articles_cyberleninka/'
-        'config/chromedriver')
+    driver = webdriver.Chrome()
     driver.get('https://cyberleninka.ru')
     db = WDB(
         '/home/al/Projects_My/downloading_related_articles_cyberleninka/'
@@ -93,22 +91,26 @@ def step_one(fraza: str):
     # print('href_pag_b == ', href_pag_b)
     npag = 1
     list_href = []
-    while npag <= (len(puginators)+2):
-        # get next partishion articls
-        first_articles = driver.find_elements(
-            By.XPATH, '//ul[@id="search-results"]//li//h2[@class="title"]')
-        # print(len(first_articles))
-        for el in first_articles:
-            dd = el.find_element(By.XPATH, './a')
-            # # print(f'page = {npag} href ==>> {dd.get_attribute("href")}')
-            list_href.append(dd.get_attribute("href"))
-        # print()
-        cprint(
-           f'href_pag_b + str(npag) == {href_pag_b + str(npag)}',
-           'red', attrs=['bold'])
-        driver.get(href_pag_b + str(npag) + '#')
-        npag += 1
-        sleep(3)
+    try:
+        while npag <= (len(puginators)+2):
+            # get next partishion articls
+            first_articles = driver.find_elements(
+                By.XPATH, '//ul[@id="search-results"]//li//h2[@class="title"]')
+            # print(len(first_articles))
+            for el in first_articles:
+                dd = el.find_element(By.XPATH, './a')
+                # # print(f'page = {npag} href ==>> {dd.get_attribute("href")}')
+                list_href.append(dd.get_attribute("href"))
+            # print()
+            cprint(
+                f'href_pag_b + str(npag) == {href_pag_b + str(npag)}',
+                'red', attrs=['bold'])
+            driver.get(href_pag_b + str(npag))  # + '#')
+            npag += 1
+            sleep(4)
+    except Exception as e:
+        if e == '':
+            print('e == ', e)
     set_href = set(list_href)
     for hh in set_href:
         data_str = zero_data()
@@ -130,10 +132,9 @@ def get_all_info_articles(href: str, path_load, questions, level: str):
         _type_: _description_
     """
     # start page
-    db = WDB('/home/al/Projects_My/downloading_related_articles_cyberleninka/dataset/db_all_info.db')
-    driver = webdriver.Chrome(
-        '/home/al/Projects_My/downloading_related_articles_cyberleninka/'
-        'config/chromedriver')
+    db = WDB(
+        '/home/al/Projects_My/downloading_related_articles_cyberleninka/dataset/db_all_info.db')
+    driver = webdriver.Chrome()
     driver.get(href)
     sleep(5)
     data_dict = zero_data()
@@ -284,7 +285,8 @@ def load_article(fraza: str):
             'downloading_related_articles_cyberleninka/'\
             f'dataset/files_articles/{str_s[0]}'
         os.makedirs(path_load, exist_ok=True)
-        get_all_info_articles(str_s[2], path_load, str_s[0], str(int(str_s[1]) + 1))
+        get_all_info_articles(str_s[2], path_load,
+                              str_s[0], str(int(str_s[1]) + 1))
 
 
 if __name__ == '__main__':
@@ -295,11 +297,12 @@ if __name__ == '__main__':
     # FRAZA = "математическая модель митохондрии"
     # FRAZA = "рибосома молекулярнная машина"
     # FRAZA = "рибосома молекулярнная машина"
-    FRAZA = "рибосома"
+    # FRAZA = "рибосома"
     # FRAZA = "современная теория сознания"
-
+    # FRAZA = "временные ряды"
     # FRAZA = "методы современной когнитологии"
     # FRAZA = "современная теория общих систем"
+    FRAZA = "словарный запас от возраста"
 
     # load all href on all atricles for fraza
     # step_one(FRAZA)
